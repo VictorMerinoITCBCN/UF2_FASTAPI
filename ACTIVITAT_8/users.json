@@ -1,0 +1,13 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "Rafael",
+            "last_name": "Merino",
+            "age": 26,
+            "gender": "M",
+            "email": "rafa@gmail.com",
+            "phone": 657994355
+        }
+    ]
+}

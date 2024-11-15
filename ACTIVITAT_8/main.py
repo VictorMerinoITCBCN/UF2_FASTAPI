@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response, status
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Union
 import users
@@ -23,25 +23,22 @@ async def create_user(user: User):
     return {"msg": f"Usuari {user.name} creat correctament"}
 
 @app.get("/user/{id}")
-def get_user(id: int, response: Response):
+def get_user(id: int):
     user = users.get_user(id)
 
     if user: return user
-    response.status_code = status.HTTP_404_NOT_FOUND
-    return {"error": "Usuari no trobat"}
+    raise HTTPException(status_code=404, detail="Usuari no trobat")
 
 @app.put("/user/{id}")
-def update_user(id: int, user: User, response: Response):
+def update_user(id: int, user: User):
     updated_user = users.update_user(id, user.name, user.last_name, user.age, user.gender, user.email, user.phone)
 
     if updated_user: return {"msg": f"Usuari amb id '{id}' actualitzat correctament"}
-    response.status_code = status.HTTP_404_NOT_FOUND
-    return {"error": "Usuari no trobat"}
+    raise HTTPException(status_code=404, detail="Usuari no trobat")
 
 @app.patch("/user/{id}")
-def modify_user(id: int, modification: Modification, response: Response):
+def modify_user(id: int, modification: Modification):
     modified_user = users.modify_user(id, modification.key, modification.value)
 
     if modified_user: return modified_user
-    response.status_code = status.HTTP_404_NOT_FOUND
-    return {"error": "Usuari no trobat"}
+    raise HTTPException(status_code=404, detail="Usuari no trobat")

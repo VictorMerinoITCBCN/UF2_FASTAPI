@@ -1,4 +1,5 @@
 import json
+from typing import Union
 
 def get_users():
     with open("users.json", "r") as file:
@@ -6,8 +7,11 @@ def get_users():
     return data
 
 def get_user(id: int):
-    users = get_users()["users"]
-    return [user for user in users if user["id"] == id][0]
+    users = get_users().get("users", [])
+    
+    for user in users:
+        if user.get("id") == id: return user
+    return None
 
 def create_user(name: str, last_name: str, age: int, gender: str, email: str, phone: int):
     users = get_users()
@@ -27,3 +31,46 @@ def create_user(name: str, last_name: str, age: int, gender: str, email: str, ph
 
     with open("users.json", "w") as file:
         json.dump(users, file, indent=4)
+
+def update_user(id: int, name: str, last_name: str, age: int, gender: str, email: str, phone: int):
+    users = get_users().get("users", [])
+
+    new_user = {
+        "id": id, 
+        "name": name,
+        "last_name": last_name,
+        "age": age,
+        "gender": gender,
+        "email": email,
+        "phone": phone
+    }
+
+    found = False
+    for i, user in enumerate(users):
+        if user.get("id") == id:
+            users[i] = new_user
+            found = True
+            break
+    
+    if found:
+        with open("users.json", "w") as file:
+            json.dump({"users": users}, file, indent=4)
+        return new_user
+    return None
+
+def modify_user(id: int, key: str, value: Union[str, int]):
+    users = get_users().get("users", [])
+
+    found = False
+    for i, user in enumerate(users):
+        if user.get("id") == id:
+            users[i][key] = value
+            new_user = users[i]
+            found = True
+            break
+    
+    if found:
+        with open("users.json", "w") as file:
+            json.dump({"users": users}, file, indent=4)
+        return new_user
+    return None

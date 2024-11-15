@@ -2,12 +2,12 @@
     "users": [
         {
             "id": 1,
-            "name": "Rafael",
+            "name": "Victor",
             "last_name": "Merino",
-            "age": 26,
+            "age": 22,
             "gender": "M",
-            "email": "rafa@gmail.com",
-            "phone": 657994355
+            "email": "victor@gmail.com",
+            "phone": 0
         }
     ]
 }

@@ -1,5 +1,7 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
+from typing import Annotated
+
+from fastapi import FastAPI, Body
+from pydantic import BaseModel, Field
 from . import users
 
 app = FastAPI()
@@ -7,8 +9,8 @@ app = FastAPI()
 class User(BaseModel):
     name: str
     last_name: str
-    age: int
-    email: str
+    age: int = Field(gt=0, description="The age must be positve")
+    email: str = Field(pattern=r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
     phone: int
 
 class Column(BaseModel):
@@ -21,11 +23,11 @@ def get_user(id: int):
     return users.get(id)
 
 @app.post("/user")
-def create_user(user: User):
+def create_user(user: Annotated[User, Body(embed=True)]):
     return users.create(user)
 
 @app.put("/user/{id}")
-def update_user(id: int, user: User):
+def update_user(id: int, user: Annotated[User, Body(embed=True)]):
     return users.update(id, user)
 
 @app.patch("/user/{id}")

@@ -24,6 +24,10 @@ class Column(BaseModel):
     value: str
         
 
+@app.get("/users/")
+def get_all_users():
+    return users.get_all()
+
 @app.get("/user/{id}")
 def get_user(id: int):
     return users.get(id)

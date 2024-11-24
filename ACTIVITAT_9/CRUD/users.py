@@ -1,5 +1,31 @@
 from db_connect.Connection import Connection
 
+def formate(user):
+    return {
+        "id": user[0],
+        "name": user[1],
+        "last_name": user[2],
+        "age": user[3],
+        "email": user[4],
+        "phone": user[5]
+}
+
+def get_all():
+    try:
+        conn = Connection.get()
+        cursor = conn.cursor()
+
+        query = "SELECT * FROM users"
+        cursor.execute(query)
+
+        users = cursor.fetchall()
+
+        return {"ok": True, "users": [formate(user) for user in users]}
+    except Exception as e:
+        return {"ok": False, "Error": f"{e}"}
+    finally:
+        Connection.close()
+
 def get(id):
     try:
         conn = Connection.get()
@@ -10,7 +36,7 @@ def get(id):
         cursor.execute(query, (id,))
         user = cursor.fetchone()
 
-        return {"ok": True, "user": user}
+        return {"ok": True, "user": formate(user)}
     except Exception as e:
         return {"ok": False, "Error": f"{e}"}
     finally:

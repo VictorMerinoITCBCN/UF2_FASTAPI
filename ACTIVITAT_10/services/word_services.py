@@ -17,7 +17,7 @@ def get_themes():
 
         return [formate(theme) for theme in themes]
     except Exception as  e:
-        return None
+        return f"Error: {e}"
     finally:
         Connection.close()
 
@@ -31,8 +31,8 @@ def get_random_word(theme):
         cursor.execute(query, (theme,))
         word = cursor.fetchone()
 
-        return formate(word)
+        return [formate(word)]
     except Exception as  e:
-        return None
+        return f"Error: {e}"
     finally:
         Connection.close()

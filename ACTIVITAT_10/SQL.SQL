@@ -1,0 +1,5 @@
+CREATE TABLE word (
+    id SERIAL PRIMARY KEY,
+    word VARCHAR(255) NOT NULL,
+    theme VARCHAR(255) NOT NULL
+);
